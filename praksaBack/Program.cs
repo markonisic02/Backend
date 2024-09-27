@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using praksaBack.Data;
+using praksaBack.Interfaces;
+using praksaBack.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IStockRepository, StockRepository>();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using praksaBack.Dtos.Stock;
 using praksaBack.Models;
+using System.Runtime.CompilerServices;
 
 namespace praksaBack.Mappers
 {
@@ -16,6 +17,19 @@ namespace praksaBack.Mappers
                 LastDiv = stockModel.LastDiv,
                 Industry = stockModel.Industry,
                 MarketCap = stockModel.MarketCap
+            };
+        }
+
+        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockdto)
+        {
+            return new Stock
+            {
+                Symbol = stockdto.Symbol,
+                CompanyName = stockdto.CompanyName,
+                Purchase = stockdto.Purchase,
+                LastDiv = stockdto.LastDiv,
+                Industry = stockdto.Industry,
+                MarketCap = stockdto.MarketCap
             };
         }
     }

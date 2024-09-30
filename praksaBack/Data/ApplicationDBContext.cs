@@ -12,5 +12,7 @@ namespace praksaBack.Data
 
         public DbSet<Stock> Stock { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace praksaBack.Dtos.Stock
+﻿using praksaBack.Dtos.Comment;
+
+namespace praksaBack.Dtos.Stock
 {
     public class StockDto
     {
@@ -12,6 +14,7 @@
 
         public string Industry { get; set; } = string.Empty;
         public long MarketCap { get; set; }
+        public List<CommentDto> Comments { get; set; }
         //Comments
     }
 }

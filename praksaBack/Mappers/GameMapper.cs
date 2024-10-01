@@ -17,5 +17,16 @@ namespace praksaBack.Mappers
                 CategoryId = gameModel.CategoryId
             };
         }
+
+        public static Game ToGameFromCreate(this CreateGameDto gameDto, int categoryId)
+        {
+            return new Game
+            {
+                Title = gameDto.Title,
+                Description = gameDto.Description,
+                ImageUrl = gameDto.ImageUrl,
+                CategoryId = categoryId
+            };
+        }
     }
 }

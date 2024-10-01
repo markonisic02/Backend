@@ -14,10 +14,22 @@ namespace praksaBack.Repository
             _context = context;
         }
 
+        public async Task<Game> CreateAsync(Game gameModel)
+        {
+            await _context.Games.AddAsync(gameModel);
+            await _context.SaveChangesAsync();
+            return gameModel;
+        }
+
         public async Task<List<Game>> GetAllAsync()
 
         {
             return await _context.Games.ToListAsync();
+        }
+
+        public async Task<Game?> GetByIdAsync(int id)
+        {
+            return await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
         }
     }
 }

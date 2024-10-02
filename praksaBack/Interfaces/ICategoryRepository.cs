@@ -6,8 +6,12 @@ namespace praksaBack.Interfaces
     {
         Task<List<Category>> GetAllAsync();
 
+        Task<Category?> GetByIdAsync(int id);
+
         Task<Category> CreateAsync(Category categoryModel);
 
         Task<bool> CategoryExists(int id);
+
+        Task<Category?> DeleteAsync(int id);
     }
 }

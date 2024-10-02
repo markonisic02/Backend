@@ -6,6 +6,13 @@ using praksaBack.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(Options =>
+{
+    Options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 // Add services to the container.
 
 //builder.Services.AddControllers();
@@ -31,6 +38,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

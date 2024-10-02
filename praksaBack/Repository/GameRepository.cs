@@ -21,6 +21,19 @@ namespace praksaBack.Repository
             return gameModel;
         }
 
+        public async Task<Game?> DeleteAsync(int id)
+        {
+            var gameModel = await _context.Games.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (gameModel == null)
+            {
+                return null;
+            }
+            _context.Games.Remove(gameModel);
+            await _context.SaveChangesAsync();
+            return gameModel;
+        }
+
         public async Task<List<Game>> GetAllAsync()
 
         {
@@ -30,6 +43,21 @@ namespace praksaBack.Repository
         public async Task<Game?> GetByIdAsync(int id)
         {
             return await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
+        }
+
+        public async Task<Game?> UpdateAsync(int id, Game gameModel)
+        {
+            var existingGame = await _context.Games.FindAsync(id);
+            if (existingGame == null)
+            {
+                return null;
+            }
+            existingGame.Title = gameModel.Title;
+            existingGame.Description = gameModel.Description;
+            existingGame.ImageUrl = gameModel.ImageUrl;
+
+            await _context.SaveChangesAsync();
+            return existingGame;
         }
     }
 }

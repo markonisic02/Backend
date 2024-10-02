@@ -9,5 +9,9 @@ namespace praksaBack.Interfaces
         Task<Game?> GetByIdAsync(int id);
 
         Task<Game> CreateAsync(Game gameModel);
+
+        Task<Game?> DeleteAsync(int id);
+
+        Task<Game?> UpdateAsync(int id, Game gameModel);
     }
 }

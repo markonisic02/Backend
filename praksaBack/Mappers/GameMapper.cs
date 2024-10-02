@@ -1,4 +1,5 @@
-﻿using praksaBack.Dtos.Game;
+﻿using praksaBack.Dtos.Category;
+using praksaBack.Dtos.Game;
 using praksaBack.Models;
 using System.Runtime.CompilerServices;
 
@@ -26,6 +27,16 @@ namespace praksaBack.Mappers
                 Description = gameDto.Description,
                 ImageUrl = gameDto.ImageUrl,
                 CategoryId = categoryId
+            };
+        }
+
+        public static Game ToGameFromUpdate(this UpdateGameRequestDto gamedto)
+        {
+            return new Game
+            {
+                Title = gamedto.Title,
+                Description = gamedto.Description,
+                ImageUrl = gamedto.ImageUrl
             };
         }
     }

@@ -48,5 +48,19 @@ namespace praksaBack.Repository
         {
             return await _context.Categories.Include(c => c.Games).FirstOrDefaultAsync(i => i.Id == id);
         }
+
+        public async Task<Category?> UpdateAsync(int id, Category categoryModel)
+        {
+            var existingCategory = await _context.Categories.FindAsync(id);
+            if (existingCategory == null)
+            {
+                return null;
+            }
+            existingCategory.CategoryName = categoryModel.CategoryName;
+            //existingCategory.Games = categoryModel.Games; //NEZZ
+
+            await _context.SaveChangesAsync();
+            return existingCategory;
+        }
     }
 }

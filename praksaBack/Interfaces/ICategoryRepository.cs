@@ -13,5 +13,7 @@ namespace praksaBack.Interfaces
         Task<bool> CategoryExists(int id);
 
         Task<Category?> DeleteAsync(int id);
+
+        Task<Category?> UpdateAsync(int id, Category categoryModel);
     }
 }

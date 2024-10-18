@@ -58,5 +58,17 @@ namespace praksaBack.Controllers
             }
             return NoContent();
         }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CategoryDto categoryDto)
+        {
+            var category = await _categoryRepo.UpdateAsync(id, categoryDto.ToCategoryFromUpdate());
+            if (category == null)
+            {
+                return NotFound("Category not found");
+            }
+            return Ok(category.ToCategoryDto());
+        }
     }
 }

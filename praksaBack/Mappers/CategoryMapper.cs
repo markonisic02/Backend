@@ -22,5 +22,13 @@ namespace praksaBack.Mappers
                 CategoryName = categoryDto.CategoryName
             };
         }
+
+        public static Category ToCategoryFromUpdate(this CategoryDto categoryDto)
+        {
+            return new Category
+            {
+                CategoryName = categoryDto.CategoryName
+            };
+        }
     }
 }

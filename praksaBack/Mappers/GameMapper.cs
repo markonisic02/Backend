@@ -15,7 +15,7 @@ namespace praksaBack.Mappers
                 Title = gameModel.Title,
                 Description = gameModel.Description,
                 ImageUrl = gameModel.ImageUrl,
-                CategoryId = gameModel.CategoryId
+                CategoryId = gameModel.CategoryId,
             };
         }
 

@@ -14,5 +14,11 @@ namespace praksaBack.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasMany(p => p.Games).WithOne(c => c.Category)
+                .HasForeignKey(c => c.CategoryId).OnDelete(DeleteBehavior.SetNull);  // Set null on delete }
+        }
     }
 }

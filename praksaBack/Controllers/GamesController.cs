@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using praksaBack.Data;
 using praksaBack.Dtos.Category;
 using praksaBack.Dtos.Game;
 using praksaBack.Interfaces;
 using praksaBack.Mappers;
+using praksaBack.Models;
 
 namespace praksaBack.Controllers
 {
@@ -77,6 +79,38 @@ namespace praksaBack.Controllers
                 return NotFound("Game does not exist");
             }
             return Ok(gameModel);
+        }
+
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] SearchRequest request)
+        {
+            // Pretpostavljamo da koristimo DbContext _context za pristup bazi podataka
+            var query = _context.Games.Include(g => g.Category).AsQueryable();  // Uključujemo Category u upit
+
+            // Filtriranje po CategoryId ako je poslat
+            if (request.CategoryId.HasValue)
+            {
+                query = query.Where(game => game.CategoryId == request.CategoryId.Value);
+            }
+
+            // Filtriranje po Term ako je poslat
+            if (!string.IsNullOrEmpty(request.Term))
+            {
+                query = query.Where(game => game.Title.ToLower().Contains(request.Term.ToLower()));
+            }
+
+            // Preuzimamo rezultate i projektujemo u odgovarajući format
+            var result = query.Select(game => new GameResponse
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Description = game.Description,
+                ImageUrl = game.ImageUrl,
+                CategoryId = game.CategoryId.HasValue ? game.CategoryId.Value : 0,  // Ako je CategoryId null, postavi 0
+                CategoryName = game.Category != null ? game.Category.CategoryName : "No Category"  // Ako nema kategorije, "No Category"
+            }).ToList();
+
+            return Ok(result);
         }
     }
 }

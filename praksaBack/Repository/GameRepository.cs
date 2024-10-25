@@ -55,6 +55,7 @@ namespace praksaBack.Repository
             existingGame.Title = gameModel.Title;
             existingGame.Description = gameModel.Description;
             existingGame.ImageUrl = gameModel.ImageUrl;
+            existingGame.CategoryId = gameModel.CategoryId;
 
             await _context.SaveChangesAsync();
             return existingGame;

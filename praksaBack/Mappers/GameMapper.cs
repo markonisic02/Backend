@@ -36,7 +36,8 @@ namespace praksaBack.Mappers
             {
                 Title = gamedto.Title,
                 Description = gamedto.Description,
-                ImageUrl = gamedto.ImageUrl
+                ImageUrl = gamedto.ImageUrl,
+                CategoryId = gamedto.CategoryId
             };
         }
     }

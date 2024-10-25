@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using praksaBack.Data;
 using praksaBack.Interfaces;
 using praksaBack.Models;
@@ -29,10 +30,12 @@ namespace praksaBack.Repository
         public async Task<Category?> DeleteAsync(int id)
         {
             var categoryModel = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
             if (categoryModel == null)
             {
                 return null;
             }
+
             _context.Categories.Remove(categoryModel);
             await _context.SaveChangesAsync();
             return categoryModel;

@@ -51,11 +51,24 @@ namespace praksaBack.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            var category = await _categoryRepo.GetByIdAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            var gamesExist = _context.Games.Any(g => g.CategoryId == id);
+            if (gamesExist)
+            {
+                return StatusCode(606, "Postoje igrice u ovoj kategoriji");
+            }
+
             var categoryModel = await _categoryRepo.DeleteAsync(id);
             if (categoryModel == null)
             {
                 return NotFound();
             }
+
             return NoContent();
         }
 

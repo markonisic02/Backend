@@ -45,6 +45,15 @@ namespace praksaBack.Repository
             return await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
         }
 
+        public async Task<List<Game>> SearchAsync(string searchTerm)
+        {
+            return await _context.Games
+       .Where(g => g.Title.Contains(searchTerm) ||
+                   g.Description.Contains(searchTerm) ||
+                   g.ImageUrl.Contains(searchTerm)) // Dodajte i druge kriterijume pretrage ako je potrebno
+       .ToListAsync();
+        }
+
         public async Task<Game?> UpdateAsync(int id, Game gameModel)
         {
             var existingGame = await _context.Games.FindAsync(id);

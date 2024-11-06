@@ -13,5 +13,7 @@ namespace praksaBack.Interfaces
         Task<Game?> DeleteAsync(int id);
 
         Task<Game?> UpdateAsync(int id, Game gameModel);
+
+        Task<List<Game>> SearchAsync(string searchTerm);
     }
 }

@@ -49,10 +49,11 @@ namespace praksaBack.Controllers
         public async Task<IActionResult> Create([FromRoute] int categoryId, CreateGameDto gameDto)
         {
             if (!await _categoryRepo.CategoryExists(categoryId))
+
             {
                 return BadRequest("Category does not exist");
             }
-            var gameModel = gameDto.ToGameFromCreate(categoryId);
+            var gameModel = gameDto.ToGameFromCreate(); //categoryId u zagradi
             await _gameRepo.CreateAsync(gameModel);
             return CreatedAtAction(nameof(GetById), new { id = gameModel.Id }, gameModel.ToGameDto());
         }

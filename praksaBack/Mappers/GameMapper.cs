@@ -19,14 +19,14 @@ namespace praksaBack.Mappers
             };
         }
 
-        public static Game ToGameFromCreate(this CreateGameDto gameDto, int categoryId)
+        public static Game ToGameFromCreate(this CreateGameDto gameDto)
         {
             return new Game
             {
                 Title = gameDto.Title,
                 Description = gameDto.Description,
                 ImageUrl = gameDto.ImageUrl,
-                CategoryId = categoryId
+                CategoryId = gameDto.CategoryId,
             };
         }
 

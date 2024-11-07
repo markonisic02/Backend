@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using praksaBack.Data;
 using praksaBack.Interfaces;
 using praksaBack.Models;
@@ -45,13 +46,22 @@ namespace praksaBack.Repository
             return await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public async Task<List<Game>> SearchAsync(string searchTerm)
+        public async Task<List<GameResponse>> SearchAsync(SearchRequest request)
         {
             return await _context.Games
-       .Where(g => g.Title.Contains(searchTerm) ||
-                   g.Description.Contains(searchTerm) ||
-                   g.ImageUrl.Contains(searchTerm)) // Dodajte i druge kriterijume pretrage ako je potrebno
-       .ToListAsync();
+                .Include(g => g.Category)
+                .Where(game => !request.CategoryId.HasValue || game.CategoryId == request.CategoryId.Value)
+                .Where(game => string.IsNullOrEmpty(request.Term) || game.Title.ToLower().Contains(request.Term.ToLower()))
+                .Select(game => new GameResponse
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                    Description = game.Description,
+                    ImageUrl = game.ImageUrl,
+                    CategoryId = game.CategoryId ?? 0,
+                    CategoryName = game.Category != null ? game.Category.CategoryName : "No Category"
+                })
+                .ToListAsync();
         }
 
         public async Task<Game?> UpdateAsync(int id, Game gameModel)

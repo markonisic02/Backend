@@ -1,5 +1,6 @@
 ﻿using praksaBack.Dtos.Category;
 using praksaBack.Dtos.Game;
+using praksaBack.Models;
 
 namespace praksaBack.Interfaces
 {
@@ -16,6 +17,6 @@ namespace praksaBack.Interfaces
         Task<GameDto?> UpdateAsync(int id, UpdateGameRequestDto gameModel);
 
         // Nova metoda za pretragu igara
-        Task<List<GameDto>> Search(string searchTerm);
+        Task<List<GameResponse>> SearchAsync(SearchRequest searchTerm);
     }
 }

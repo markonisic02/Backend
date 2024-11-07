@@ -11,77 +11,67 @@ namespace praksaBack.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-        private readonly ICategoryRepository _categoryRepo;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDBContext context, ICategoryRepository categoryRepo)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
-            _categoryRepo = categoryRepo;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _categoryRepo.GetAllAsync();
-            var categoryDto = categories.Select(s => s.ToCategoryDto());
-            return Ok(categoryDto);
+            var categories = await _categoryService.GetAllAsync();
+            return Ok(categories);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var category = await _categoryRepo.GetByIdAsync(id);
+            var category = await _categoryService.GetByIdAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
-            return Ok(category.ToCategoryDto());
+            return Ok(category);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto categoryDto)
         {
-            var categoryModel = categoryDto.ToCategoryFromCreateDto();
-            await _categoryRepo.CreateAsync(categoryModel);
-            return CreatedAtAction(nameof(GetById), new { id = categoryModel.Id }, categoryModel.ToCategoryDto());  // AKO PUKNE VJEROVATNO OVDJE TREBA GetById napravit
+            var createdCategory = await _categoryService.CreateAsync(categoryDto);
+            return CreatedAtAction(nameof(GetById), new { id = createdCategory.Id }, createdCategory);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var category = await _categoryRepo.GetByIdAsync(id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                bool success = await _categoryService.DeleteAsync(id);
+                if (!success)
+                {
+                    return NotFound();
+                }
+                return NoContent();
             }
-
-            var gamesExist = _context.Games.Any(g => g.CategoryId == id);
-            if (gamesExist)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(606, "Postoje igrice u ovoj kategoriji");
+                return StatusCode(606, ex.Message);
             }
-
-            var categoryModel = await _categoryRepo.DeleteAsync(id);
-            if (categoryModel == null)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
         }
 
         [HttpPut]
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CategoryDto categoryDto)
         {
-            var category = await _categoryRepo.UpdateAsync(id, categoryDto.ToCategoryFromUpdate());
+            var category = await _categoryService.UpdateAsync(id, categoryDto);
             if (category == null)
             {
                 return NotFound("Category not found");
             }
-            return Ok(category.ToCategoryDto());
+            return Ok(category);
         }
     }
 }

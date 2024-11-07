@@ -60,10 +60,9 @@ namespace praksaBack.Services
         }
 
         // Implementacija pretrage igara
-        public async Task<List<GameDto>> Search(string searchTerm)
+        public async Task<List<GameResponse>> SearchAsync(SearchRequest searchTerm)
         {
-            var games = await _gamesRepository.SearchAsync(searchTerm);
-            return games.Select(game => game.ToGameDto()).ToList();
+            return await _gamesRepository.SearchAsync(searchTerm);
         }
     }
 }

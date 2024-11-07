@@ -6,6 +6,7 @@ using praksaBack.Repository;
 using praksaBack.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IGamesService, GamesService>();
 builder.Services.AddCors(Options =>
 {

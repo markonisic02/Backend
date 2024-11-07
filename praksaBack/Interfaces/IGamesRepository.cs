@@ -14,6 +14,6 @@ namespace praksaBack.Interfaces
 
         Task<Game?> UpdateAsync(int id, Game gameModel);
 
-        Task<List<Game>> SearchAsync(string searchTerm);
+        Task<List<GameResponse>> SearchAsync(SearchRequest searchTerm);
     }
 }

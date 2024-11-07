@@ -5,8 +5,14 @@ namespace praksaBack.Interfaces
 {
     public interface ICategoryService
     {
-        Task<CategoryDto> GetByIdAsync(int id);
+        Task<IEnumerable<CategoryDto>> GetAllAsync();
 
-        Task<CategoryDto> CreateAsync(CreateCategoryRequestDto createCategoryRequestDto);
+        Task<CategoryDto?> GetByIdAsync(int id);
+
+        Task<CategoryDto> CreateAsync(CreateCategoryRequestDto categoryDto);
+
+        Task<bool> DeleteAsync(int id);
+
+        Task<CategoryDto?> UpdateAsync(int id, CategoryDto categoryDto);
     }
 }
